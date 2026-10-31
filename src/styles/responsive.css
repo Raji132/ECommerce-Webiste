@@ -1,0 +1,11 @@
+@media (max-width: 64rem) {
+  :root {
+    --page-gutter: 2rem;
+  }
+}
+
+@media (max-width: 47.999rem) {
+  :root {
+    --page-gutter: 1.25rem;
+  }
+}
