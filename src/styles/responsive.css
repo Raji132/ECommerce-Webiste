@@ -9,3 +9,10 @@
     --page-gutter: 1.25rem;
   }
 }
+
+@media (max-width: 20rem) {
+  html,
+  body {
+    min-width: 0;
+  }
+}
