@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
+import Loader from '../components/common/Loader.jsx'
 import MainLayout from '../layouts/MainLayout.jsx'
 
 const ForProfessionals = lazy(
@@ -12,7 +13,7 @@ const Services = lazy(() => import('../pages/Services/Services.jsx'))
 
 function AppRoutes() {
   return (
-    <Suspense fallback={<p role="status">Loading page...</p>}>
+    <Suspense fallback={<Loader fullPage label="Loading page..." />}>
       <Routes>
         <Route element={<MainLayout />}>
           <Route index element={<Home />} />
