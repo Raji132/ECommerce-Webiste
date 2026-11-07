@@ -1,0 +1,27 @@
+{
+  "navigation": {
+    "services": "Services",
+    "howItWorks": "How it works",
+    "forProfessionals": "For professionals",
+    "login": "Login",
+    "primaryLabel": "Primary navigation",
+    "openMenu": "Open navigation menu",
+    "closeMenu": "Close navigation menu",
+    "logoAlt": "Quick Search home"
+  },
+  "language": {
+    "label": "Language",
+    "english": "English",
+    "tamil": "தமிழ்"
+  },
+  "pages": {
+    "home": "Home",
+    "services": "Services",
+    "howItWorks": "How it works",
+    "forProfessionals": "For professionals",
+    "login": "Login",
+    "notFound": "Page not found",
+    "returnHome": "Return home"
+  },
+  "loading": "Loading page..."
+}
