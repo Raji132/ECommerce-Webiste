@@ -23,5 +23,26 @@
     "notFound": "Page not found",
     "returnHome": "Return home"
   },
-  "loading": "Loading page..."
+  "loading": "Loading page...",
+  "footer": {
+    "tagline": "Great people. Better everyday.",
+    "sections": {
+      "company": "Company",
+      "customers": "For customers",
+      "professionals": "For professionals",
+      "contact": "Get in touch"
+    },
+    "links": {
+      "about": "About Quick Search",
+      "story": "Our story",
+      "services": "Explore services",
+      "bookings": "My bookings",
+      "partner": "Become a partner",
+      "resources": "Partner resources",
+      "help": "Help center"
+    },
+    "copyright": "© {{year}} Quick Search. All rights reserved.",
+    "privacy": "Privacy",
+    "terms": "Terms"
+  }
 }
