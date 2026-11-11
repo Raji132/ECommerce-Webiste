@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Loader from '../components/common/Loader.jsx'
 import MainLayout from '../layouts/MainLayout.jsx'
@@ -7,11 +7,15 @@ import MainLayout from '../layouts/MainLayout.jsx'
 const ForProfessionals = lazy(
   () => import('../pages/ForProfessionals/ForProfessionals.jsx')
 )
+const ForgotPassword = lazy(() => import('../pages/ForgotPassword.jsx'))
 const Home = lazy(() => import('../pages/Home/Home.jsx'))
 const HowItWorks = lazy(() => import('../pages/HowItWorks/HowItWorks.jsx'))
 const Login = lazy(() => import('../pages/Login.jsx'))
 const NotFound = lazy(() => import('../pages/NotFound/NotFound.jsx'))
+const Register = lazy(() => import('../pages/Register.jsx'))
+const ResetPassword = lazy(() => import('../pages/ResetPassword.jsx'))
 const Services = lazy(() => import('../pages/Services/Services.jsx'))
+const VerifyCode = lazy(() => import('../pages/VerifyCode.jsx'))
 
 function AppRoutes() {
   const { t } = useTranslation()
@@ -20,11 +24,16 @@ function AppRoutes() {
     <Suspense fallback={<Loader fullPage label={t('loading')} />}>
       <Routes>
         <Route element={<MainLayout />}>
-          <Route index element={<Home />} />
+          <Route index element={<Navigate to="/login" replace />} />
+          <Route path="home" element={<Home />} />
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="verify-code" element={<VerifyCode />} />
+          <Route path="reset-password" element={<ResetPassword />} />
           <Route path="services" element={<Services />} />
           <Route path="how-it-works" element={<HowItWorks />} />
           <Route path="for-professionals" element={<ForProfessionals />} />
-          <Route path="login" element={<Login />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

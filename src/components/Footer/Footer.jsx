@@ -1,98 +1,65 @@
-import { Link } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import logo from '../../assets/images/logo.svg'
+import { Link, useLocation } from 'react-router-dom'
 import './Footer.css'
 
 function Footer() {
-  const { t } = useTranslation()
-  const currentYear = new Date().getFullYear()
-  const footerSections = [
-    {
-      title: t('footer.sections.company'),
-      links: [
-        { label: t('footer.links.about'), to: '/#about' },
-        { label: t('footer.links.story'), to: '/#our-story' },
-      ],
-    },
-    {
-      title: t('footer.sections.customers'),
-      links: [
-        { label: t('footer.links.services'), to: '/services' },
-        { label: t('footer.links.bookings'), to: '/#my-bookings' },
-      ],
-    },
-    {
-      title: t('footer.sections.professionals'),
-      links: [
-        { label: t('footer.links.partner'), to: '/for-professionals' },
-        { label: t('footer.links.resources'), to: '/#partner-resources' },
-      ],
-    },
-    {
-      title: t('footer.sections.contact'),
-      links: [
-        { label: t('footer.links.help'), to: '/#help' },
-        {
-          label: 'hello@quicksearch.example',
-          to: 'mailto:hello@quicksearch.example',
-          isExternal: true,
-        },
-      ],
-    },
-  ]
+  const { pathname } = useLocation()
+  const isHome = pathname === '/' || pathname === '/home'
+  const year = new Date().getFullYear()
 
   return (
-    <footer className="site-footer">
-      <div className="site-footer__inner container">
+    <footer className={`site-footer${isHome ? ' site-footer--home' : ''}`}>
+      <div className="site-footer__inner">
         <div className="site-footer__brand">
-          <Link to="/" aria-label={t('navigation.logoAlt')}>
-            <img src={logo} alt={t('navigation.logoAlt')} />
-          </Link>
-          <p className="site-footer__tagline">{t('footer.tagline')}</p>
+          {isHome ? (
+            <>
+              <strong className="home-footer__logo">APEX</strong>
+              <span className="home-footer__tagline">Small scale. Endless obsession.</span>
+              <span>Curated diecast. Authentic brands. Collector-first.</span>
+            </>
+          ) : (
+            <>
+              <strong>APEX&nbsp; / &nbsp;COLLECTIBLES</strong>
+              <span>© {year} Apex Collectibles. All rights reserved.</span>
+            </>
+          )}
         </div>
 
-        <div className="site-footer__grid">
-          {footerSections.map((section) => (
-            <div className="site-footer__column" key={section.title}>
-              <h2 className="site-footer__heading">{section.title}</h2>
-              <ul className="site-footer__links">
-                {section.links.map((link) => (
-                  <li key={link.label}>
-                    {link.isExternal ? (
-                      <a
-                        href={link.to}
-                        className="site-footer__link"
-                      >
-                        {link.label}
-                      </a>
-                    ) : (
-                      <Link
-                        to={link.to}
-                        className="site-footer__link"
-                      >
-                        {link.label}
-                      </Link>
-                    )}
-                  </li>
-                ))}
-              </ul>
+        {!isHome && <div className="site-footer__details"><p>100% authentic · Secure checkout · Collector-first support</p></div>}
+
+        {isHome && (
+          <>
+            <div className="home-footer-columns">
+              <section>
+                <h2>EXPLORE</h2>
+                <Link to="/services">New arrivals</Link>
+                <Link to="/services">Best sellers</Link>
+                <Link to="/services">Premium collection</Link>
+              </section>
+              <section>
+                <h2>HELP</h2>
+                <Link to="/how-it-works">Shipping &amp; delivery</Link>
+                <Link to="/how-it-works">Returns &amp; refunds</Link>
+                <Link to="/how-it-works">Contact us</Link>
+              </section>
+              <section>
+                <h2>STAY IN THE LOOP</h2>
+                <p>New drops. No noise.<br />Your email address.</p>
+                <form className="home-footer__subscribe" onSubmit={(event) => event.preventDefault()}>
+                  <label className="visually-hidden" htmlFor="footer-email">Your email address</label>
+                  <input id="footer-email" type="email" placeholder="Your email address" required />
+                  <button type="submit" aria-label="Subscribe">→</button>
+                </form>
+              </section>
             </div>
-          ))}
-        </div>
-
-        <div className="site-footer__bottom">
-          <p className="site-footer__copyright">
-            {t('footer.copyright', { year: currentYear })}
-          </p>
-          <span className="site-footer__separator" aria-hidden="true">&middot;</span>
-          <Link to="/#privacy" className="site-footer__legal-link">
-            {t('footer.privacy')}
-          </Link>
-          <span className="site-footer__separator" aria-hidden="true">&middot;</span>
-          <Link to="/#terms" className="site-footer__legal-link">
-            {t('footer.terms')}
-          </Link>
-        </div>
+            <div className="home-footer__bottom">
+              <span>© {year} APEX Collectibles</span>
+              <i aria-hidden="true">·</i>
+              <Link to="/home">Privacy policy</Link>
+              <i aria-hidden="true">·</i>
+              <Link to="/home">Terms of service</Link>
+            </div>
+          </>
+        )}
       </div>
     </footer>
   )
