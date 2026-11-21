@@ -1,7 +1,29 @@
+import { useEffect } from 'react'
+import { createPortal } from 'react-dom'
+import './Modal.css'
+
 function Modal({ isOpen, title, children, onClose }) {
+  useEffect(() => {
+    if (!isOpen) return undefined
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    function handleKeyDown(event) {
+      if (event.key === 'Escape') onClose()
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [isOpen, onClose])
+
   if (!isOpen) return null
 
-  return (
+  return createPortal(
     <div className="modal-backdrop" role="presentation" onMouseDown={onClose}>
       <section
         className="modal"
@@ -16,7 +38,8 @@ function Modal({ isOpen, title, children, onClose }) {
         </div>
         {children}
       </section>
-    </div>
+    </div>,
+    document.body
   )
 }
 

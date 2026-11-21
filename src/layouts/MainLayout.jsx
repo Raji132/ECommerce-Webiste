@@ -11,11 +11,12 @@ function MainLayout() {
     '/verify-code',
     '/reset-password',
   ].includes(pathname)
+  const isOrdersPage = pathname === '/my-account/orders'
 
   return (
-    <div className={`site-layout${isLogin ? ' site-layout--login' : ''}`}>
+    <div className={`site-layout${isLogin ? ' site-layout--login' : ''}${isOrdersPage ? ' site-layout--orders' : ''}`}>
       <Header />
-      <div className="site-layout__content">
+      <div className={`site-layout__content${isOrdersPage ? ' site-layout__content--orders' : ''}`}>
         <Outlet />
       </div>
       <Footer />

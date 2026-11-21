@@ -13,8 +13,11 @@ const HowItWorks = lazy(() => import('../pages/HowItWorks/HowItWorks.jsx'))
 const Login = lazy(() => import('../pages/Login.jsx'))
 const AccountLayout = lazy(() => import('../pages/MyAccount/AccountLayout.jsx'))
 const AccountDashboard = lazy(() => import('../pages/MyAccount/AccountDashboard.jsx'))
+const AddressBook = lazy(() => import('../pages/MyAccount/AddressBook.jsx'))
 const Profile = lazy(() => import('../pages/MyAccount/Profile.jsx'))
 const MyOrders = lazy(() => import('../pages/MyAccount/MyOrders.jsx'))
+const OrderDetails = lazy(() => import('../pages/MyAccount/OrderDetails.jsx'))
+const OrderInvoice = lazy(() => import('../pages/MyAccount/OrderInvoice.jsx'))
 const OrderTracking = lazy(() => import('../pages/MyAccount/OrderTracking.jsx'))
 const AccountPlaceholder = lazy(() => import('../pages/MyAccount/AccountPlaceholder.jsx'))
 const NotFound = lazy(() => import('../pages/NotFound/NotFound.jsx'))
@@ -45,8 +48,10 @@ function AppRoutes() {
             <Route path="profile" element={<Profile />} />
             <Route path="orders" element={<MyOrders />} />
             <Route path="orders/track" element={<OrderTracking />} />
+            <Route path="orders/:orderId" element={<OrderDetails />} />
+            <Route path="orders/:orderId/invoice" element={<OrderInvoice />} />
             <Route path="wishlist" element={<AccountPlaceholder title="Wishlist" />} />
-            <Route path="addresses" element={<AccountPlaceholder title="Addresses" />} />
+            <Route path="addresses" element={<AddressBook />} />
             <Route path="payment-methods" element={<AccountPlaceholder title="Payment Methods" />} />
             <Route path="notifications" element={<AccountPlaceholder title="Notifications" />} />
             <Route path="support" element={<AccountPlaceholder title="Support" />} />

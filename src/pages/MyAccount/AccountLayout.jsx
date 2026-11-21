@@ -27,10 +27,18 @@ const pageNames = {
 function AccountLayout() {
   const { pathname } = useLocation()
   const navigate = useNavigate()
-  const currentPage = pageNames[pathname] || 'Account'
+  const isInvoice = pathname.endsWith('/invoice')
+  const isOrderDetails = /^\/my-account\/orders\/[^/]+$/.test(pathname)
+  const currentPage = isInvoice
+    ? 'Invoice'
+    : pageNames[pathname] || (isOrderDetails ? 'Order details' : 'Account')
+  const selectedMenuPath = pathname.startsWith('/my-account/orders')
+    ? '/my-account/orders'
+    : pathname
+  const isOrdersPage = pathname === '/my-account/orders'
 
   return (
-    <main className="account-page">
+    <main className={`account-page${isOrdersPage ? ' account-page--orders' : ''}`}>
       <nav className="account-breadcrumb" aria-label="Breadcrumb">
         <Link to="/home">Home</Link>
         <span aria-hidden="true">/</span>
@@ -39,7 +47,7 @@ function AccountLayout() {
         <span aria-current="page">{currentPage}</span>
       </nav>
 
-      <div className="account-layout">
+      <div className={`account-layout${isOrdersPage ? ' account-layout--orders' : ''}`}>
         <aside className="account-sidebar">
           <div className="account-sidebar__garage">
             <span>Your garage</span>
@@ -64,13 +72,10 @@ function AccountLayout() {
 
         <label className="account-mobile-menu">
           <span className="visually-hidden">My account section</span>
-          <select value={pathname} onChange={(event) => navigate(event.target.value)}>
+          <select value={selectedMenuPath} onChange={(event) => navigate(event.target.value)}>
             {menuItems.map((item) => (
               <option key={item.to} value={item.to}>{item.label}</option>
             ))}
-            {pathname === '/my-account/orders/track' && (
-              <option value="/my-account/orders/track">Order tracking</option>
-            )}
           </select>
         </label>
 

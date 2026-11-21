@@ -45,9 +45,9 @@ function Profile() {
           <label><input type="checkbox" defaultChecked /> 1:64 scale</label>
         </fieldset>
 
-        <label className="profile-form__newsletter">
+        <div className="profile-form__newsletter">
           <input type="checkbox" defaultChecked /> Email me about new drops and restocks
-        </label>
+        </div>
 
         <div className="profile-form__actions">
           <Button type="submit" variant="primary">Save changes</Button>
