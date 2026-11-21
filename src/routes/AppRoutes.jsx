@@ -11,6 +11,12 @@ const ForgotPassword = lazy(() => import('../pages/ForgotPassword.jsx'))
 const Home = lazy(() => import('../pages/Home/Home.jsx'))
 const HowItWorks = lazy(() => import('../pages/HowItWorks/HowItWorks.jsx'))
 const Login = lazy(() => import('../pages/Login.jsx'))
+const AccountLayout = lazy(() => import('../pages/MyAccount/AccountLayout.jsx'))
+const AccountDashboard = lazy(() => import('../pages/MyAccount/AccountDashboard.jsx'))
+const Profile = lazy(() => import('../pages/MyAccount/Profile.jsx'))
+const MyOrders = lazy(() => import('../pages/MyAccount/MyOrders.jsx'))
+const OrderTracking = lazy(() => import('../pages/MyAccount/OrderTracking.jsx'))
+const AccountPlaceholder = lazy(() => import('../pages/MyAccount/AccountPlaceholder.jsx'))
 const NotFound = lazy(() => import('../pages/NotFound/NotFound.jsx'))
 const Register = lazy(() => import('../pages/Register.jsx'))
 const ResetPassword = lazy(() => import('../pages/ResetPassword.jsx'))
@@ -34,6 +40,17 @@ function AppRoutes() {
           <Route path="services" element={<Services />} />
           <Route path="how-it-works" element={<HowItWorks />} />
           <Route path="for-professionals" element={<ForProfessionals />} />
+          <Route path="my-account" element={<AccountLayout />}>
+            <Route index element={<AccountDashboard />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="orders" element={<MyOrders />} />
+            <Route path="orders/track" element={<OrderTracking />} />
+            <Route path="wishlist" element={<AccountPlaceholder title="Wishlist" />} />
+            <Route path="addresses" element={<AccountPlaceholder title="Addresses" />} />
+            <Route path="payment-methods" element={<AccountPlaceholder title="Payment Methods" />} />
+            <Route path="notifications" element={<AccountPlaceholder title="Notifications" />} />
+            <Route path="support" element={<AccountPlaceholder title="Support" />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
