@@ -55,11 +55,13 @@ function Header() {
   return (
     <header className="site-header site-header--store">
       {/* Top Black Announcement Bar */}
-      <div className="store-announcement-bar">
-        <p className="store-announcement-bar__text">
-          FOR THE LOVE OF SMALL CARS. Free shipping on orders ₹1,999+ &nbsp;•&nbsp; 100% authentic collectibles
-        </p>
-      </div>
+      {!isAuthPage && (
+        <div className="store-announcement-bar">
+          <p className="store-announcement-bar__text">
+            FOR THE LOVE OF SMALL CARS. Free shipping on orders ₹1,999+ &nbsp;•&nbsp; 100% authentic collectibles
+          </p>
+        </div>
+      )}
 
       {/* Main Store Header */}
       <div className="store-header__top">
@@ -82,26 +84,25 @@ function Header() {
           </form>
         )}
 
-        <div className="site-header__actions" aria-label="Account links">
-          {/* On auth pages, only show simple Account link to /login */}
-          {isAuthPage ? (
-            <Link to="/login" className="is-active">Account</Link>
-          ) : isLoggedIn ? (
-            <>
-              <Link to="/my-account" className={isAccountActive ? 'is-active' : ''}>
-                Account
-              </Link>
-              <Link to="/wishlist" className={pathname === '/wishlist' ? 'is-active' : ''}>
-                <span aria-hidden="true">♡</span> Wishlist {wishlistCount > 0 ? `(${wishlistCount})` : ''}
-              </Link>
-              <Link to="/cart" className={pathname === '/cart' || pathname === '/bag' ? 'is-active' : ''}>
-                Bag ({cartCount})
-              </Link>
-            </>
-          ) : (
-            <Link to="/login">Account</Link>
-          )}
-        </div>
+        {!isAuthPage && (
+          <div className="site-header__actions" aria-label="Account links">
+            {isLoggedIn ? (
+              <>
+                <Link to="/my-account" className={isAccountActive ? 'is-active' : ''}>
+                  Account
+                </Link>
+                <Link to="/wishlist" className={pathname === '/wishlist' ? 'is-active' : ''}>
+                  <span aria-hidden="true">♡</span> Wishlist {wishlistCount > 0 ? `(${wishlistCount})` : ''}
+                </Link>
+                <Link to="/cart" className={pathname === '/cart' || pathname === '/bag' ? 'is-active' : ''}>
+                  Bag ({cartCount})
+                </Link>
+              </>
+            ) : (
+              <Link to="/login">Account</Link>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Categories & Navigation Bottom Bar */}
