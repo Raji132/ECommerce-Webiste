@@ -27,10 +27,10 @@ function ProductGrid({ products }) {
     <div className="product-grid">
       {products.map((product, index) => (
         <article className="product-card" key={product.name}>
-          <Link className="product-card__image" to="/services" aria-label={`View ${product.name}`}>
+          <Link className="product-card__image" to={`/product_details/${(index % 4) + 1}`} aria-label={`View ${product.name}`}>
             <img
               src={product.image || loginImage}
-              alt={product.image ? product.name : `Temporary product image for ${product.name}`}
+              alt={product.name}
               style={{ objectPosition: product.position ? `${product.position} center` : 'center' }}
             />
             {index === 0 && <span className="product-card__badge">NEW DROP</span>}
@@ -38,7 +38,7 @@ function ProductGrid({ products }) {
           <div className="product-card__info">
             <div>
               <span className="product-card__brand">{product.brand}</span>
-              <h3><Link to="/services">{product.name}</Link></h3>
+              <h3><Link to={`/product_details/${(index % 4) + 1}`}>{product.name}</Link></h3>
               <strong>{product.price}</strong>
             </div>
             <button type="button" aria-label={`Add ${product.name} to bag`}>+</button>

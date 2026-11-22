@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import AppRoutes from './routes/AppRoutes.jsx'
+import { WishlistProvider } from './context/WishlistContext.jsx'
 
 function App() {
   const location = useLocation()
@@ -15,7 +16,11 @@ function App() {
     }
   }, [location.pathname, navigate])
 
-  return <AppRoutes />
+  return (
+    <WishlistProvider>
+      <AppRoutes />
+    </WishlistProvider>
+  )
 }
 
 export default App

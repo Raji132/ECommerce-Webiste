@@ -1,13 +1,3 @@
-import { useTranslation } from 'react-i18next'
+import ProductListing from '../ProductListing/ProductListing.jsx'
 
-function Services() {
-  const { t } = useTranslation()
-
-  return (
-    <main className="page-placeholder">
-      <h1>{t('pages.services')}</h1>
-    </main>
-  )
-}
-
-export default Services
+export default ProductListing

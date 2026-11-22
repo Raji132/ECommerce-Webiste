@@ -14,7 +14,10 @@ const Login = lazy(() => import('../pages/Login.jsx'))
 const NotFound = lazy(() => import('../pages/NotFound/NotFound.jsx'))
 const Register = lazy(() => import('../pages/Register.jsx'))
 const ResetPassword = lazy(() => import('../pages/ResetPassword.jsx'))
-const Services = lazy(() => import('../pages/Services/Services.jsx'))
+const ProductListing = lazy(() => import('../pages/ProductListing/ProductListing.jsx'))
+const ProductDetails = lazy(() => import('../pages/ProductDetails/ProductDetails.jsx'))
+const SearchResults = lazy(() => import('../pages/SearchResults/SearchResults.jsx'))
+const Wishlist = lazy(() => import('../pages/Wishlist/Wishlist.jsx'))
 const VerifyCode = lazy(() => import('../pages/VerifyCode.jsx'))
 
 function AppRoutes() {
@@ -31,7 +34,18 @@ function AppRoutes() {
           <Route path="forgot-password" element={<ForgotPassword />} />
           <Route path="verify-code" element={<VerifyCode />} />
           <Route path="reset-password" element={<ResetPassword />} />
-          <Route path="services" element={<Services />} />
+          <Route path="product_listing" element={<ProductListing />} />
+          <Route path="product-listing" element={<ProductListing />} />
+          <Route path="product_details" element={<ProductDetails />} />
+          <Route path="product_details/:id" element={<ProductDetails />} />
+          <Route path="product-details" element={<ProductDetails />} />
+          <Route path="product-details/:id" element={<ProductDetails />} />
+          <Route path="search" element={<SearchResults />} />
+          <Route path="search_results" element={<SearchResults />} />
+          <Route path="search-results" element={<SearchResults />} />
+          <Route path="wishlist" element={<Wishlist />} />
+          <Route path="shop" element={<ProductListing />} />
+          <Route path="services" element={<ProductListing />} />
           <Route path="how-it-works" element={<HowItWorks />} />
           <Route path="for-professionals" element={<ForProfessionals />} />
           <Route path="*" element={<NotFound />} />
