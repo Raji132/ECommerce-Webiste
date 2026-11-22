@@ -36,14 +36,14 @@ function Header() {
             <button type="submit" aria-label="Search">⌕</button>
           </form>
           <div className="site-header__actions" aria-label="Account links">
-            <Link to="/login">Account</Link>
-            <Link to="/login"><span aria-hidden="true">♡</span> Wishlist</Link>
+            <Link to="/my-account">Account</Link>
+            <Link to="/my-account/wishlist"><span aria-hidden="true">♡</span> Wishlist</Link>
             <Link to="/home">Bag ()</Link>
           </div>
         </div>
         <div className="store-header__bottom">
           <nav className="site-header__navigation" aria-label="Shop navigation">
-            <Link className="site-header__link" to="/services">Shop all</Link>
+            <Link className="site-header__link" to="/home">Shop all</Link>
             <Link className="site-header__link" to="/services">New arrivals</Link>
             <Link className="site-header__link" to="/services">Hot Wheels</Link>
             <Link className="site-header__link" to="/services">Mini GT</Link>
@@ -71,8 +71,8 @@ function Header() {
           <Link className="site-header__link" to="/services">Collections</Link>
         </nav>
         <div className="site-header__actions" aria-label="Account links">
-          <Link to="/login">Account</Link>
-          <Link to="/login"><span aria-hidden="true">♡</span> Wishlist</Link>
+          <Link to="/my-account">Account</Link>
+          <Link to="/my-account/wishlist"><span aria-hidden="true">♡</span> Wishlist</Link>
           <Link to="/home">Bag (2)</Link>
         </div>
       </div>
