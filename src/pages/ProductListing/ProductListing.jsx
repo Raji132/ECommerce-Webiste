@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useWishlist } from '../../context/WishlistContext.jsx'
+import { useCart } from '../../context/CartContext.jsx'
 import supraImage from '../../assets/images/07a9431e8b005f2559ec35d4678f0e2a0f2c4b73.png'
 import porscheImage from '../../assets/images/183b86ba9b7783d8e8c3cf047ad82b14dc5984fd.png'
 import skylineImage from '../../assets/images/9062b76dc21645cb357456380dbf236aa64f9583.jpg'
@@ -170,6 +171,7 @@ const ITEMS_PER_PAGE = 8
 
 function ProductListing() {
   const { isWishlisted, toggleWishlist } = useWishlist()
+  const { addToCart } = useCart()
   const [selectedBrands, setSelectedBrands] = useState([])
   const [selectedCategories, setSelectedCategories] = useState([])
   const [selectedScales, setSelectedScales] = useState([])
@@ -210,10 +212,11 @@ function ProductListing() {
     setCurrentPage(1)
   }
 
-  const handleAddToCart = (id) => {
-    setAddedItems((prev) => ({ ...prev, [id]: true }))
+  const handleAddToCart = (product) => {
+    addToCart(product, 1)
+    setAddedItems((prev) => ({ ...prev, [product.id]: true }))
     setTimeout(() => {
-      setAddedItems((prev) => ({ ...prev, [id]: false }))
+      setAddedItems((prev) => ({ ...prev, [product.id]: false }))
     }, 1200)
   }
 
@@ -595,7 +598,7 @@ function ProductListing() {
                             className={`product-listing-card__add ${
                               isAdded ? 'product-listing-card__add--added' : ''
                             }`}
-                            onClick={() => handleAddToCart(product.id)}
+                            onClick={() => handleAddToCart(product)}
                             aria-label={`Add ${product.name} to cart`}
                           >
                             {isAdded ? '✓' : '+'}

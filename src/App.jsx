@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import AppRoutes from './routes/AppRoutes.jsx'
 import { WishlistProvider } from './context/WishlistContext.jsx'
+import { CartProvider } from './context/CartContext.jsx'
 
 function App() {
   const location = useLocation()
@@ -18,7 +19,9 @@ function App() {
 
   return (
     <WishlistProvider>
-      <AppRoutes />
+      <CartProvider>
+        <AppRoutes />
+      </CartProvider>
     </WishlistProvider>
   )
 }

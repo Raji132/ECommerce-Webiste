@@ -5,21 +5,25 @@ function Footer() {
   const { pathname } = useLocation()
   const year = new Date().getFullYear()
 
-  const isAuthPage = [
+  const isMinimalFooter = [
     '/login',
     '/register',
     '/forgot-password',
     '/verify-code',
     '/reset-password',
+    '/cart',
+    '/bag',
+    '/add_to_cart',
+    '/add-to-cart',
   ].includes(pathname)
 
-  if (isAuthPage) {
+  if (isMinimalFooter) {
     return (
       <footer className="site-footer">
         <div className="site-footer__inner">
           <div className="site-footer__brand">
             <strong>APEX&nbsp; / &nbsp;COLLECTIBLES</strong>
-            <span>© {year} Apex Collectibles. All rights reserved.</span>
+            <span>© {year} APEX Collectibles. All rights reserved.</span>
           </div>
           <div className="site-footer__details">
             <p>100% authentic · Secure checkout · Collector-first support</p>

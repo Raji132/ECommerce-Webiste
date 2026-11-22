@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { useWishlist } from '../../context/WishlistContext.jsx'
+import { useCart } from '../../context/CartContext.jsx'
 import supraImage from '../../assets/images/07a9431e8b005f2559ec35d4678f0e2a0f2c4b73.png'
 import porscheImage from '../../assets/images/183b86ba9b7783d8e8c3cf047ad82b14dc5984fd.png'
 import skylineImage from '../../assets/images/9062b76dc21645cb357456380dbf236aa64f9583.jpg'
@@ -166,6 +167,7 @@ function ProductDetails() {
   const { id } = useParams()
   const [searchParams] = useSearchParams()
   const { isWishlisted, toggleWishlist } = useWishlist()
+  const { addToCart } = useCart()
 
   const productId = Number(id || searchParams.get('id')) || 1
   const product = PRODUCTS_DATABASE[productId] || PRODUCTS_DATABASE[1]
@@ -203,6 +205,7 @@ function ProductDetails() {
   }
 
   const handleAddToCart = () => {
+    addToCart(product, quantity)
     setAddedNotice(true)
     setTimeout(() => setAddedNotice(false), 2000)
   }

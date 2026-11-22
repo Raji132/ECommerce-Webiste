@@ -1,21 +1,25 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useWishlist } from '../../context/WishlistContext.jsx'
+import { useCart } from '../../context/CartContext.jsx'
 import './Wishlist.css'
 
 function Wishlist() {
   const { wishlist, removeFromWishlist } = useWishlist()
+  const { addToCart } = useCart()
   const [addedItems, setAddedItems] = useState({})
   const [movedAll, setMovedAll] = useState(false)
 
-  const handleAddToCart = (id) => {
-    setAddedItems((prev) => ({ ...prev, [id]: true }))
+  const handleAddToCart = (product) => {
+    addToCart(product, 1)
+    setAddedItems((prev) => ({ ...prev, [product.id]: true }))
     setTimeout(() => {
-      setAddedItems((prev) => ({ ...prev, [id]: false }))
+      setAddedItems((prev) => ({ ...prev, [product.id]: false }))
     }, 1200)
   }
 
   const handleMoveAllToCart = () => {
+    wishlist.forEach((product) => addToCart(product, 1))
     setMovedAll(true)
     setTimeout(() => {
       setMovedAll(false)
@@ -122,7 +126,7 @@ function Wishlist() {
                         className={`wishlist-card__add ${
                           isAdded ? 'wishlist-card__add--added' : ''
                         }`}
-                        onClick={() => handleAddToCart(product.id)}
+                        onClick={() => handleAddToCart(product)}
                         aria-label={`Add ${product.name} to cart`}
                       >
                         {isAdded ? '✓' : '+'}

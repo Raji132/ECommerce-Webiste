@@ -18,6 +18,7 @@ const ProductListing = lazy(() => import('../pages/ProductListing/ProductListing
 const ProductDetails = lazy(() => import('../pages/ProductDetails/ProductDetails.jsx'))
 const SearchResults = lazy(() => import('../pages/SearchResults/SearchResults.jsx'))
 const Wishlist = lazy(() => import('../pages/Wishlist/Wishlist.jsx'))
+const Cart = lazy(() => import('../pages/Cart/Cart.jsx'))
 const VerifyCode = lazy(() => import('../pages/VerifyCode.jsx'))
 
 function AppRoutes() {
@@ -44,6 +45,10 @@ function AppRoutes() {
           <Route path="search_results" element={<SearchResults />} />
           <Route path="search-results" element={<SearchResults />} />
           <Route path="wishlist" element={<Wishlist />} />
+          <Route path="cart" element={<Cart />} />
+          <Route path="bag" element={<Cart />} />
+          <Route path="add_to_cart" element={<Cart />} />
+          <Route path="add-to-cart" element={<Cart />} />
           <Route path="shop" element={<ProductListing />} />
           <Route path="services" element={<ProductListing />} />
           <Route path="how-it-works" element={<HowItWorks />} />

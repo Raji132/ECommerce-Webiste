@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { useWishlist } from '../../context/WishlistContext.jsx'
+import { useCart } from '../../context/CartContext.jsx'
 import './Header.css'
 
 function Header() {
@@ -8,6 +9,7 @@ function Header() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const { wishlistCount } = useWishlist()
+  const { cartCount } = useCart()
 
   const currentSearchParam = searchParams.get('q') || searchParams.get('search') || ''
   const [searchInputValue, setSearchInputValue] = useState(currentSearchParam)
@@ -81,7 +83,9 @@ function Header() {
           <Link to="/wishlist" className={pathname === '/wishlist' ? 'is-active' : ''}>
             <span aria-hidden="true">♡</span> Wishlist {wishlistCount > 0 ? `(${wishlistCount})` : ''}
           </Link>
-          <Link to="/product_listing">Bag (2)</Link>
+          <Link to="/cart" className={pathname === '/cart' || pathname === '/bag' ? 'is-active' : ''}>
+            Bag ({cartCount})
+          </Link>
         </div>
       </div>
 
