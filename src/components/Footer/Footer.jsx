@@ -15,7 +15,7 @@ function Footer() {
     '/bag',
     '/add_to_cart',
     '/add-to-cart',
-  ].includes(pathname)
+  ].includes(pathname) || pathname.startsWith('/my-account')
 
   if (isMinimalFooter) {
     return (

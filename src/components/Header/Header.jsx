@@ -48,6 +48,8 @@ function Header() {
     '/services',
   ].includes(pathname)
 
+  const isAccountActive = pathname.startsWith('/my-account')
+
   return (
     <header className="site-header site-header--store">
       {/* Top Black Announcement Bar */}
@@ -79,7 +81,9 @@ function Header() {
         )}
 
         <div className="site-header__actions" aria-label="Account links">
-          <Link to="/login">Account</Link>
+          <Link to="/my-account" className={isAccountActive ? 'is-active' : ''}>
+            Account
+          </Link>
           <Link to="/wishlist" className={pathname === '/wishlist' ? 'is-active' : ''}>
             <span aria-hidden="true">♡</span> Wishlist {wishlistCount > 0 ? `(${wishlistCount})` : ''}
           </Link>
