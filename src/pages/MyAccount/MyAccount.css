@@ -1336,7 +1336,14 @@
 
 .support-faq {
   display: grid;
+  height: 250px;
+  align-content: start;
   gap: 10px;
+  padding-right: 8px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
 }
 
 .support-faq__item {
@@ -1410,7 +1417,7 @@
 }
 
 .support-contact {
-  margin-top: 28px;
+  margin-top: 10px;
 }
 
 .support-contact > p {
@@ -1461,6 +1468,10 @@
 
   .support-heading {
     margin-bottom: 20px;
+  }
+
+  .support-faq {
+    height: 230px;
   }
 
   .support-faq__item summary {

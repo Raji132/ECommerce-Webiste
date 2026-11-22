@@ -16,11 +16,11 @@ const helpTopics = [
     keywords: 'genuine original real authenticity',
     answer: 'Yes. Every collectible is sourced from trusted brands and authorized distributors, and checked by our team before it is listed.',
   },
-  {
-    question: 'What payment methods can I use?',
-    keywords: 'card upi checkout pay',
-    answer: 'Checkout supports major credit and debit cards and UPI. You can manage saved payment methods from the Payment methods section of your account.',
-  },
+  // {
+  //   question: 'What payment methods can I use?',
+  //   keywords: 'card upi checkout pay',
+  //   answer: 'Checkout supports major credit and debit cards and UPI. You can manage saved payment methods from the Payment methods section of your account.',
+  // },
 ]
 
 function Support() {
