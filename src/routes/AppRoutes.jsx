@@ -14,6 +14,8 @@ const Login = lazy(() => import('../pages/Login.jsx'))
 const AccountLayout = lazy(() => import('../pages/MyAccount/AccountLayout.jsx'))
 const AccountDashboard = lazy(() => import('../pages/MyAccount/AccountDashboard.jsx'))
 const AddressBook = lazy(() => import('../pages/MyAccount/AddressBook.jsx'))
+const PaymentMethods = lazy(() => import('../pages/MyAccount/PaymentMethods.jsx'))
+const Support = lazy(() => import('../pages/MyAccount/Support.jsx'))
 const Profile = lazy(() => import('../pages/MyAccount/Profile.jsx'))
 const MyOrders = lazy(() => import('../pages/MyAccount/MyOrders.jsx'))
 const OrderDetails = lazy(() => import('../pages/MyAccount/OrderDetails.jsx'))
@@ -52,9 +54,9 @@ function AppRoutes() {
             <Route path="orders/:orderId/invoice" element={<OrderInvoice />} />
             <Route path="wishlist" element={<AccountPlaceholder title="Wishlist" />} />
             <Route path="addresses" element={<AddressBook />} />
-            <Route path="payment-methods" element={<AccountPlaceholder title="Payment Methods" />} />
+            <Route path="payment-methods" element={<PaymentMethods />} />
             <Route path="notifications" element={<AccountPlaceholder title="Notifications" />} />
-            <Route path="support" element={<AccountPlaceholder title="Support" />} />
+            <Route path="support" element={<Support />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Route>
