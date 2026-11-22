@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { useAuth } from '../../hooks/useAuth.js'
 import { useWishlist } from '../../context/WishlistContext.jsx'
 import { useCart } from '../../context/CartContext.jsx'
 import './Header.css'
@@ -8,6 +9,7 @@ function Header() {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
+  const { isLoggedIn } = useAuth()
   const { wishlistCount } = useWishlist()
   const { cartCount } = useCart()
 
@@ -81,15 +83,24 @@ function Header() {
         )}
 
         <div className="site-header__actions" aria-label="Account links">
-          <Link to="/my-account" className={isAccountActive ? 'is-active' : ''}>
-            Account
-          </Link>
-          <Link to="/wishlist" className={pathname === '/wishlist' ? 'is-active' : ''}>
-            <span aria-hidden="true">♡</span> Wishlist {wishlistCount > 0 ? `(${wishlistCount})` : ''}
-          </Link>
-          <Link to="/cart" className={pathname === '/cart' || pathname === '/bag' ? 'is-active' : ''}>
-            Bag ({cartCount})
-          </Link>
+          {/* On auth pages, only show simple Account link to /login */}
+          {isAuthPage ? (
+            <Link to="/login" className="is-active">Account</Link>
+          ) : isLoggedIn ? (
+            <>
+              <Link to="/my-account" className={isAccountActive ? 'is-active' : ''}>
+                Account
+              </Link>
+              <Link to="/wishlist" className={pathname === '/wishlist' ? 'is-active' : ''}>
+                <span aria-hidden="true">♡</span> Wishlist {wishlistCount > 0 ? `(${wishlistCount})` : ''}
+              </Link>
+              <Link to="/cart" className={pathname === '/cart' || pathname === '/bag' ? 'is-active' : ''}>
+                Bag ({cartCount})
+              </Link>
+            </>
+          ) : (
+            <Link to="/login">Account</Link>
+          )}
         </div>
       </div>
 

@@ -1,55 +1,48 @@
 import { createContext, useContext, useState, useEffect, useMemo } from 'react'
-import supraImage from '../assets/images/07a9431e8b005f2559ec35d4678f0e2a0f2c4b73.png'
-import porscheImage from '../assets/images/183b86ba9b7783d8e8c3cf047ad82b14dc5984fd.png'
-import skylineImage from '../assets/images/9062b76dc21645cb357456380dbf236aa64f9583.jpg'
-import defenderImage from '../assets/images/cd63661889dad3d8cbd1714ec55b6ec7a12450ca.png'
+import { useAuth } from '../hooks/useAuth.js'
 
 const CartContext = createContext(null)
 
-const INITIAL_CART = [
-  {
-    id: 1,
-    name: 'Nissan Skyline GT-R R34',
-    brand: 'Mini GT',
-    subDetails: 'Mini GT • Bayside Blue • 1:64',
-    price: 1299,
-    quantity: 1,
-    image: skylineImage,
-  },
-  {
-    id: 2,
-    name: 'Porsche 911 GT3 RS',
-    brand: 'Hot Wheels',
-    subDetails: 'Hot Wheels • Orange • 1:64',
-    price: 899,
-    quantity: 1,
-    image: porscheImage,
-  },
-]
-
 export function CartProvider({ children }) {
+  const { user, isLoggedIn } = useAuth()
+
   const [cart, setCart] = useState(() => {
+    if (!isLoggedIn || !user?.email) return []
     try {
-      const saved = localStorage.getItem('apex_cart')
-      if (saved) {
-        return JSON.parse(saved)
-      }
+      const saved = localStorage.getItem(`apex_cart_${user.email}`)
+      return saved ? JSON.parse(saved) : []
     } catch {
-      // Fallback
+      return []
     }
-    return INITIAL_CART
   })
 
   const [couponCode, setCouponCode] = useState('FIRST10')
-  const [discountPercent, setDiscountPercent] = useState(10) // 10% discount
+  const [discountPercent, setDiscountPercent] = useState(10)
 
+  // Sync with logged-in user changes
   useEffect(() => {
-    try {
-      localStorage.setItem('apex_cart', JSON.stringify(cart))
-    } catch {
-      // Storage error
+    if (isLoggedIn && user?.email) {
+      try {
+        const saved = localStorage.getItem(`apex_cart_${user.email}`)
+        setCart(saved ? JSON.parse(saved) : [])
+      } catch {
+        setCart([])
+      }
+    } else {
+      setCart([])
     }
-  }, [cart])
+  }, [isLoggedIn, user?.email])
+
+  // Save cart changes for the logged-in user
+  useEffect(() => {
+    if (isLoggedIn && user?.email) {
+      try {
+        localStorage.setItem(`apex_cart_${user.email}`, JSON.stringify(cart))
+      } catch {
+        // Storage error
+      }
+    }
+  }, [cart, isLoggedIn, user?.email])
 
   const cartCount = useMemo(() => {
     return cart.reduce((sum, item) => sum + item.quantity, 0)
@@ -167,3 +160,5 @@ export function useCart() {
   }
   return context
 }
+
+export default CartContext

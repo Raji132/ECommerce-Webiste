@@ -1,8 +1,10 @@
 import { useState } from 'react'
+import { useAuth } from '../../hooks/useAuth.js'
 import Button from '../../components/common/Button.jsx'
 import '../../components/common/Button.css'
 
 function Profile() {
+  const { user } = useAuth()
   const [saved, setSaved] = useState(false)
 
   function handleSave(event) {
@@ -21,19 +23,19 @@ function Profile() {
         <div className="profile-form__grid">
           <label>
             <span>Full name</span>
-            <input defaultValue="Arjun Mehta" />
+            <input defaultValue={user?.name || ''} placeholder="Your name" />
           </label>
           <label>
             <span>Email address</span>
-            <input type="email" defaultValue="arjun.mehta@gmail.com" />
+            <input type="email" defaultValue={user?.email || ''} placeholder="you@example.com" />
           </label>
           <label>
             <span>Mobile number</span>
-            <input type="tel" defaultValue="+91 98765 43210" />
+            <input type="tel" placeholder="+91 98765 43210" />
           </label>
           <label>
             <span>Birthday (optional)</span>
-            <input defaultValue="24 March 1996" />
+            <input placeholder="DD Month YYYY" />
           </label>
         </div>
 
