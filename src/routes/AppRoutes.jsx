@@ -21,6 +21,7 @@ const MyOrders = lazy(() => import('../pages/MyAccount/MyOrders.jsx'))
 const OrderDetails = lazy(() => import('../pages/MyAccount/OrderDetails.jsx'))
 const OrderInvoice = lazy(() => import('../pages/MyAccount/OrderInvoice.jsx'))
 const OrderTracking = lazy(() => import('../pages/MyAccount/OrderTracking.jsx'))
+const AccountWishlist = lazy(() => import('../pages/MyAccount/AccountWishlist.jsx'))
 const AccountPlaceholder = lazy(() => import('../pages/MyAccount/AccountPlaceholder.jsx'))
 const NotFound = lazy(() => import('../pages/NotFound/NotFound.jsx'))
 const Register = lazy(() => import('../pages/Register.jsx'))
@@ -65,6 +66,8 @@ function AppRoutes() {
           <Route path="checkout" element={<Checkout />} />
           <Route path="checkout/card" element={<Checkout initialMethod="card" />} />
           <Route path="checkout-card" element={<Checkout initialMethod="card" />} />
+          <Route path="checkout/cod" element={<Checkout initialMethod="cod" />} />
+          <Route path="checkout-cod" element={<Checkout initialMethod="cod" />} />
           <Route path="order-confirmation" element={<OrderConfirmation />} />
           <Route path="order_confirmation" element={<OrderConfirmation />} />
           <Route path="shop" element={<ProductListing />} />
@@ -78,7 +81,7 @@ function AppRoutes() {
             <Route path="orders/track" element={<OrderTracking />} />
             <Route path="orders/:orderId" element={<OrderDetails />} />
             <Route path="orders/:orderId/invoice" element={<OrderInvoice />} />
-            <Route path="wishlist" element={<AccountPlaceholder title="Wishlist" />} />
+            <Route path="wishlist" element={<AccountWishlist />} />
             <Route path="addresses" element={<AddressBook />} />
             <Route path="payment-methods" element={<PaymentMethods />} />
             <Route path="notifications" element={<AccountPlaceholder title="Notifications" />} />

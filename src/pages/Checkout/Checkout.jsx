@@ -93,7 +93,7 @@ function Checkout({ initialMethod = 'upi' }) {
   const [newAddress, setNewAddress] = useState(EMPTY_ADDRESS)
 
   const [paymentMethod, setPaymentMethod] = useState(initialMethod) // 'upi' | 'card' | 'cod'
-  const [showMethodSelector, setShowMethodSelector] = useState(initialMethod !== 'card')
+  const [showMethodSelector, setShowMethodSelector] = useState(initialMethod === 'upi')
   const [upiId, setUpiId] = useState('arjun.mehta@okaxis')
   const [cardDetails, setCardDetails] = useState({
     number: '',
@@ -102,6 +102,7 @@ function Checkout({ initialMethod = 'upi' }) {
     cvv: '',
   })
   const [saveCard, setSaveCard] = useState(true)
+  const [confirmCodPhone, setConfirmCodPhone] = useState(true)
   const [agreeTerms, setAgreeTerms] = useState(true)
   const [errorMsg, setErrorMsg] = useState('')
   const [isProcessing, setIsProcessing] = useState(false)
@@ -154,6 +155,9 @@ function Checkout({ initialMethod = 'upi' }) {
       ) {
         return 'Please complete all credit / debit card details (use MM / YY for expiry).'
       }
+    }
+    if (paymentMethod === 'cod' && !confirmCodPhone) {
+      return 'Please confirm your phone number for Cash on delivery.'
     }
     if (!agreeTerms) {
       return 'Please agree to the terms & conditions and returns policy.'
@@ -236,7 +240,15 @@ function Checkout({ initialMethod = 'upi' }) {
     }, 650)
   }
 
+  const handleBackToPaymentMethods = () => {
+    setShowMethodSelector(true)
+    setErrorMsg('')
+  }
+
   const scrollToSection = (sectionId) => {
+    if (sectionId === 'checkout-payment') {
+      setShowMethodSelector(true)
+    }
     if (step !== 'checkout') {
       setStep('checkout')
       setTimeout(() => {
@@ -411,10 +423,10 @@ function Checkout({ initialMethod = 'upi' }) {
                         </h2>
                         <button
                           type="button"
-                          className="checkout-change-btn"
-                          onClick={() => setShowMethodSelector(true)}
+                          className="checkout-back-btn"
+                          onClick={handleBackToPaymentMethods}
                         >
-                          Change method
+                          ← Back
                         </button>
                       </div>
 
@@ -526,6 +538,76 @@ function Checkout({ initialMethod = 'upi' }) {
                           <span>I agree to the terms and returns policy.</span>
                         </label>
                       </div>
+
+                      <div className="checkout-payment-footer">
+                        <button
+                          type="button"
+                          className="checkout-back-link"
+                          onClick={handleBackToPaymentMethods}
+                        >
+                          ← Back to payment methods
+                        </button>
+                      </div>
+                    </>
+                  ) : paymentMethod === 'cod' && !showMethodSelector ? (
+                    <>
+                      <div className="checkout-card__header-row checkout-payment-header-row">
+                        <h2 className="checkout-section-title">
+                          <span className="checkout-section-num">02</span> Cash on delivery
+                        </h2>
+                        <button
+                          type="button"
+                          className="checkout-back-btn"
+                          onClick={handleBackToPaymentMethods}
+                        >
+                          ← Back
+                        </button>
+                      </div>
+
+                      <div className="checkout-cod-card">
+                        <h3>Pay when your collection arrives.</h3>
+                        <p>
+                          A ₹{COD_FEE} handling fee applies. Keep ₹{finalTotal.toLocaleString('en-IN')} ready at delivery.
+                          <br />
+                          You can pay your courier in cash or via supported UPI.
+                        </p>
+                      </div>
+
+                      <div className="checkout-checkbox-stack">
+                        <label className="checkout-terms">
+                          <input
+                            type="checkbox"
+                            checked={confirmCodPhone}
+                            onChange={(e) => {
+                              setConfirmCodPhone(e.target.checked)
+                              if (e.target.checked) setErrorMsg('')
+                            }}
+                          />
+                          <span>Confirm phone number: {selectedAddress.phone}</span>
+                        </label>
+
+                        <label className="checkout-terms">
+                          <input
+                            type="checkbox"
+                            checked={agreeTerms}
+                            onChange={(e) => {
+                              setAgreeTerms(e.target.checked)
+                              if (e.target.checked) setErrorMsg('')
+                            }}
+                          />
+                          <span>I agree to the terms and returns policy.</span>
+                        </label>
+                      </div>
+
+                      <div className="checkout-payment-footer">
+                        <button
+                          type="button"
+                          className="checkout-back-link"
+                          onClick={handleBackToPaymentMethods}
+                        >
+                          ← Back to payment methods
+                        </button>
+                      </div>
                     </>
                   ) : (
                     <>
@@ -567,11 +649,12 @@ function Checkout({ initialMethod = 'upi' }) {
                             name="paymentMethod"
                             value="card"
                             checked={paymentMethod === 'card'}
-                            onChange={() => {
+                            onClick={() => {
                               setPaymentMethod('card')
                               setShowMethodSelector(false)
                               setErrorMsg('')
                             }}
+                            onChange={() => {}}
                           />
                           <span
                             className={`checkout-radio-dot ${paymentMethod === 'card' ? 'is-selected' : ''}`}
@@ -591,11 +674,12 @@ function Checkout({ initialMethod = 'upi' }) {
                             name="paymentMethod"
                             value="cod"
                             checked={paymentMethod === 'cod'}
-                            onChange={() => {
+                            onClick={() => {
                               setPaymentMethod('cod')
-                              setShowMethodSelector(true)
+                              setShowMethodSelector(false)
                               setErrorMsg('')
                             }}
+                            onChange={() => {}}
                           />
                           <span
                             className={`checkout-radio-dot ${paymentMethod === 'cod' ? 'is-selected' : ''}`}
@@ -677,21 +761,18 @@ function Checkout({ initialMethod = 'upi' }) {
               </div>
 
               <div className="checkout-summary-row">
-                <span>Shipping</span>
-                <span className="checkout-shipping-free">FREE</span>
+                <span>{codFee > 0 ? 'Shipping / COD fee' : 'Shipping'}</span>
+                {codFee > 0 ? (
+                  <span>₹{codFee}</span>
+                ) : (
+                  <span className="checkout-shipping-free">FREE</span>
+                )}
               </div>
 
               {discountAmount > 0 && (
                 <div className="checkout-summary-row checkout-summary-row--discount">
                   <span>Discount &nbsp;·&nbsp; {couponCode}</span>
                   <span>−₹{discountAmount.toLocaleString('en-IN')}</span>
-                </div>
-              )}
-
-              {codFee > 0 && (
-                <div className="checkout-summary-row">
-                  <span>COD fee</span>
-                  <span>₹{codFee}</span>
                 </div>
               )}
 

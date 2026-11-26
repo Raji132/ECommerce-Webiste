@@ -18,6 +18,8 @@ function Footer() {
     '/checkout',
     '/checkout/card',
     '/checkout-card',
+    '/checkout/cod',
+    '/checkout-cod',
     '/order-confirmation',
     '/order_confirmation',
   ].includes(pathname) || pathname.startsWith('/my-account')
