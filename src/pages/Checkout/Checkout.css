@@ -205,9 +205,18 @@
 }
 
 /* Payment Inputs */
+.checkout-payment-header-row {
+  margin-bottom: 6px;
+}
+
 .checkout-payment-details {
   margin-top: 22px;
   max-width: 520px;
+}
+
+.checkout-payment-details--card {
+  max-width: 100%;
+  margin-top: 16px;
 }
 
 .checkout-field-label {
@@ -215,18 +224,18 @@
   font-size: 0.72rem;
   font-weight: 700;
   color: #242a2d;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .checkout-input {
   width: 100%;
-  height: 42px;
+  height: 44px;
   padding: 0 14px;
   font-size: 0.82rem;
   font-weight: 500;
   color: #1a2226;
   border: 1px solid #e5e3dc;
-  border-radius: 4px;
+  border-radius: 6px;
   outline: 0;
   background: #fff;
   transition: border-color 0.15s ease;
@@ -237,19 +246,31 @@
 }
 
 .checkout-input::placeholder {
-  color: #9ba1a5;
+  color: #8b9194;
 }
 
 .checkout-card-fields {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 20px;
 }
 
 .checkout-card-split {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 24px;
+}
+
+.checkout-checkbox-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.checkout-checkbox-stack .checkout-terms {
+  margin-top: 0;
 }
 
 .checkout-cod-note {

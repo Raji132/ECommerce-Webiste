@@ -63,6 +63,8 @@ function AppRoutes() {
           <Route path="add_to_cart" element={<Cart />} />
           <Route path="add-to-cart" element={<Cart />} />
           <Route path="checkout" element={<Checkout />} />
+          <Route path="checkout/card" element={<Checkout initialMethod="card" />} />
+          <Route path="checkout-card" element={<Checkout initialMethod="card" />} />
           <Route path="order-confirmation" element={<OrderConfirmation />} />
           <Route path="order_confirmation" element={<OrderConfirmation />} />
           <Route path="shop" element={<ProductListing />} />

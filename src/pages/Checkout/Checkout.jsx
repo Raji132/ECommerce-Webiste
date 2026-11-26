@@ -42,7 +42,29 @@ const EMPTY_ADDRESS = {
 
 const COD_FEE = 49
 
-function Checkout() {
+function formatCardNumber(value) {
+  return value
+    .replace(/\D/g, '')
+    .slice(0, 16)
+    .replace(/(.{4})/g, '$1 ')
+    .trim()
+}
+
+function formatExpiry(value, prevValue) {
+  const digits = value.replace(/\D/g, '').slice(0, 4)
+  if (prevValue && value.length < prevValue.length && prevValue.endsWith(' / ')) {
+    return digits.slice(0, 1)
+  }
+  if (digits.length >= 3) {
+    return `${digits.slice(0, 2)} / ${digits.slice(2)}`
+  }
+  if (digits.length === 2 && (!prevValue || value.length > prevValue.length)) {
+    return `${digits} / `
+  }
+  return digits
+}
+
+function Checkout({ initialMethod = 'upi' }) {
   const navigate = useNavigate()
   const {
     cart,
@@ -70,7 +92,8 @@ function Checkout() {
   const [showNewAddressForm, setShowNewAddressForm] = useState(false)
   const [newAddress, setNewAddress] = useState(EMPTY_ADDRESS)
 
-  const [paymentMethod, setPaymentMethod] = useState('upi') // 'upi' | 'card' | 'cod'
+  const [paymentMethod, setPaymentMethod] = useState(initialMethod) // 'upi' | 'card' | 'cod'
+  const [showMethodSelector, setShowMethodSelector] = useState(initialMethod !== 'card')
   const [upiId, setUpiId] = useState('arjun.mehta@okaxis')
   const [cardDetails, setCardDetails] = useState({
     number: '',
@@ -78,6 +101,7 @@ function Checkout() {
     expiry: '',
     cvv: '',
   })
+  const [saveCard, setSaveCard] = useState(true)
   const [agreeTerms, setAgreeTerms] = useState(true)
   const [errorMsg, setErrorMsg] = useState('')
   const [isProcessing, setIsProcessing] = useState(false)
@@ -120,9 +144,15 @@ function Checkout() {
       }
     }
     if (paymentMethod === 'card') {
-      const cleanNumber = cardDetails.number.replace(/\s+/g, '')
-      if (cleanNumber.length < 12 || !cardDetails.name.trim() || !cardDetails.expiry.trim() || cardDetails.cvv.trim().length < 3) {
-        return 'Please complete all credit / debit card details.'
+      const cleanNumber = cardDetails.number.replace(/\D/g, '')
+      const cleanExpiry = cardDetails.expiry.replace(/\s+/g, '')
+      if (
+        cleanNumber.length < 12 ||
+        !cardDetails.name.trim() ||
+        !/^(0[1-9]|1[0-2])\/\d{2}$/.test(cleanExpiry) ||
+        cardDetails.cvv.trim().length < 3
+      ) {
+        return 'Please complete all credit / debit card details (use MM / YY for expiry).'
       }
     }
     if (!agreeTerms) {
@@ -183,6 +213,19 @@ function Checkout() {
 
       try {
         sessionStorage.setItem('apex_last_order', JSON.stringify(newOrder))
+        if (paymentMethod === 'card' && saveCard) {
+          const existingSaved = JSON.parse(localStorage.getItem('apex_saved_cards') || '[]')
+          const last4 = cardDetails.number.replace(/\D/g, '').slice(-4) || '4242'
+          existingSaved.push({
+            id: `card-${Date.now()}`,
+            type: 'card',
+            label: 'CARD',
+            detail: `•••• ${last4}`,
+            owner: cardDetails.name.trim(),
+            expires: cardDetails.expiry.replace(/\s+/g, ''),
+          })
+          localStorage.setItem('apex_saved_cards', JSON.stringify(existingSaved))
+        }
       } catch {
         // Ignore storage errors
       }
@@ -360,216 +403,256 @@ function Checkout() {
                   className="checkout-payment-section"
                   aria-label="Payment method"
                 >
-                  <h2 className="checkout-section-title">
-                    <span className="checkout-section-num">02</span> Payment method
-                  </h2>
-
-                  <div className="checkout-payment-options" role="radiogroup" aria-label="Choose payment method">
-                    {/* UPI */}
-                    <label
-                      className={`checkout-payment-option ${paymentMethod === 'upi' ? 'is-selected' : ''}`}
-                    >
-                      <input
-                        type="radio"
-                        name="paymentMethod"
-                        value="upi"
-                        checked={paymentMethod === 'upi'}
-                        onChange={() => {
-                          setPaymentMethod('upi')
-                          setErrorMsg('')
-                        }}
-                      />
-                      <span
-                        className={`checkout-radio-dot ${paymentMethod === 'upi' ? 'is-selected' : ''}`}
-                        aria-hidden="true"
-                      />
-                      <span className="checkout-payment-option__text">
-                        UPI — Pay with any UPI app
-                      </span>
-                    </label>
-
-                    {/* Credit / Debit Card */}
-                    <label
-                      className={`checkout-payment-option ${paymentMethod === 'card' ? 'is-selected' : ''}`}
-                    >
-                      <input
-                        type="radio"
-                        name="paymentMethod"
-                        value="card"
-                        checked={paymentMethod === 'card'}
-                        onChange={() => {
-                          setPaymentMethod('card')
-                          setErrorMsg('')
-                        }}
-                      />
-                      <span
-                        className={`checkout-radio-dot ${paymentMethod === 'card' ? 'is-selected' : ''}`}
-                        aria-hidden="true"
-                      />
-                      <span className="checkout-payment-option__text">
-                        Credit / debit card
-                      </span>
-                    </label>
-
-                    {/* Cash on Delivery */}
-                    <label
-                      className={`checkout-payment-option ${paymentMethod === 'cod' ? 'is-selected' : ''}`}
-                    >
-                      <input
-                        type="radio"
-                        name="paymentMethod"
-                        value="cod"
-                        checked={paymentMethod === 'cod'}
-                        onChange={() => {
-                          setPaymentMethod('cod')
-                          setErrorMsg('')
-                        }}
-                      />
-                      <span
-                        className={`checkout-radio-dot ${paymentMethod === 'cod' ? 'is-selected' : ''}`}
-                        aria-hidden="true"
-                      />
-                      <span className="checkout-payment-option__text">
-                        Cash on delivery · ₹49 fee
-                      </span>
-                    </label>
-                  </div>
-
-                  {/* Conditional Payment Input Block */}
-                  {paymentMethod === 'upi' && (
-                    <div className="checkout-payment-details">
-                      <label htmlFor="checkout-upi-id" className="checkout-field-label">
-                        UPI ID
-                      </label>
-                      <input
-                        id="checkout-upi-id"
-                        type="text"
-                        className="checkout-input"
-                        value={upiId}
-                        onChange={(e) => setUpiId(e.target.value)}
-                        placeholder="arjun.mehta@okaxis"
-                        autoComplete="off"
-                      />
-                      <p className="checkout-security-note">
-                        Your payment is encrypted and secure.
-                      </p>
-                    </div>
-                  )}
-
-                  {paymentMethod === 'card' && (
-                    <div className="checkout-payment-details checkout-card-fields">
-                      <div className="checkout-field-group">
-                        <label htmlFor="checkout-card-number" className="checkout-field-label">
-                          Card number
-                        </label>
-                        <input
-                          id="checkout-card-number"
-                          type="text"
-                          inputMode="numeric"
-                          maxLength={19}
-                          className="checkout-input"
-                          value={cardDetails.number}
-                          onChange={(e) =>
-                            setCardDetails((prev) => ({
-                              ...prev,
-                              number: e.target.value.replace(/[^\d\s]/g, ''),
-                            }))
-                          }
-                          placeholder="1234 5678 9012 3456"
-                          autoComplete="cc-number"
-                        />
+                  {paymentMethod === 'card' && !showMethodSelector ? (
+                    <>
+                      <div className="checkout-card__header-row checkout-payment-header-row">
+                        <h2 className="checkout-section-title">
+                          <span className="checkout-section-num">02</span> Pay by credit / debit card
+                        </h2>
+                        <button
+                          type="button"
+                          className="checkout-change-btn"
+                          onClick={() => setShowMethodSelector(true)}
+                        >
+                          Change method
+                        </button>
                       </div>
 
-                      <div className="checkout-field-group">
-                        <label htmlFor="checkout-card-name" className="checkout-field-label">
-                          Name on card
-                        </label>
-                        <input
-                          id="checkout-card-name"
-                          type="text"
-                          className="checkout-input"
-                          value={cardDetails.name}
-                          onChange={(e) =>
-                            setCardDetails((prev) => ({ ...prev, name: e.target.value }))
-                          }
-                          placeholder="Arjun Mehta"
-                          autoComplete="cc-name"
-                        />
-                      </div>
-
-                      <div className="checkout-card-split">
+                      <div className="checkout-payment-details checkout-payment-details--card checkout-card-fields">
                         <div className="checkout-field-group">
-                          <label htmlFor="checkout-card-exp" className="checkout-field-label">
-                            Expiry (MM/YY)
+                          <label htmlFor="checkout-card-number" className="checkout-field-label">
+                            Card number
                           </label>
                           <input
-                            id="checkout-card-exp"
+                            id="checkout-card-number"
                             type="text"
-                            maxLength={5}
+                            inputMode="numeric"
+                            maxLength={19}
                             className="checkout-input"
-                            value={cardDetails.expiry}
+                            value={cardDetails.number}
                             onChange={(e) =>
                               setCardDetails((prev) => ({
                                 ...prev,
-                                expiry: e.target.value.replace(/[^0-9/]/g, ''),
+                                number: formatCardNumber(e.target.value),
                               }))
                             }
-                            placeholder="08/28"
-                            autoComplete="cc-exp"
+                            placeholder="4242  4242  4242  4242"
+                            autoComplete="cc-number"
                           />
                         </div>
+
                         <div className="checkout-field-group">
-                          <label htmlFor="checkout-card-cvv" className="checkout-field-label">
-                            CVV
+                          <label htmlFor="checkout-card-name" className="checkout-field-label">
+                            Name on card
                           </label>
                           <input
-                            id="checkout-card-cvv"
-                            type="password"
-                            inputMode="numeric"
-                            maxLength={4}
+                            id="checkout-card-name"
+                            type="text"
                             className="checkout-input"
-                            value={cardDetails.cvv}
+                            value={cardDetails.name}
                             onChange={(e) =>
-                              setCardDetails((prev) => ({
-                                ...prev,
-                                cvv: e.target.value.replace(/\D/g, ''),
-                              }))
+                              setCardDetails((prev) => ({ ...prev, name: e.target.value }))
                             }
-                            placeholder="•••"
-                            autoComplete="cc-csc"
+                            placeholder="ARJUN MEHTA"
+                            autoComplete="cc-name"
                           />
+                        </div>
+
+                        <div className="checkout-card-split">
+                          <div className="checkout-field-group">
+                            <label htmlFor="checkout-card-exp" className="checkout-field-label">
+                              Expiry
+                            </label>
+                            <input
+                              id="checkout-card-exp"
+                              type="text"
+                              inputMode="numeric"
+                              maxLength={7}
+                              className="checkout-input"
+                              value={cardDetails.expiry}
+                              onChange={(e) =>
+                                setCardDetails((prev) => ({
+                                  ...prev,
+                                  expiry: formatExpiry(e.target.value, prev.expiry),
+                                }))
+                              }
+                              placeholder="08 / 28"
+                              autoComplete="cc-exp"
+                            />
+                          </div>
+                          <div className="checkout-field-group">
+                            <label htmlFor="checkout-card-cvv" className="checkout-field-label">
+                              CVV
+                            </label>
+                            <input
+                              id="checkout-card-cvv"
+                              type="password"
+                              inputMode="numeric"
+                              maxLength={4}
+                              className="checkout-input"
+                              value={cardDetails.cvv}
+                              onChange={(e) =>
+                                setCardDetails((prev) => ({
+                                  ...prev,
+                                  cvv: e.target.value.replace(/\D/g, ''),
+                                }))
+                              }
+                              placeholder="•••"
+                              autoComplete="cc-csc"
+                            />
+                          </div>
                         </div>
                       </div>
 
-                      <p className="checkout-security-note">
-                        Your payment is encrypted and secure.
-                      </p>
-                    </div>
-                  )}
+                      <div className="checkout-checkbox-stack">
+                        <label className="checkout-terms">
+                          <input
+                            type="checkbox"
+                            checked={saveCard}
+                            onChange={(e) => setSaveCard(e.target.checked)}
+                          />
+                          <span>Save this card securely for next time</span>
+                        </label>
 
-                  {paymentMethod === 'cod' && (
-                    <div className="checkout-payment-details">
-                      <p className="checkout-cod-note">
-                        Pay in cash or UPI upon delivery. A ₹49 cash handling fee is included in your order total.
-                      </p>
-                      <p className="checkout-security-note">
-                        Your order is protected with collector-first delivery verification.
-                      </p>
-                    </div>
-                  )}
+                        <label className="checkout-terms">
+                          <input
+                            type="checkbox"
+                            checked={agreeTerms}
+                            onChange={(e) => {
+                              setAgreeTerms(e.target.checked)
+                              if (e.target.checked) setErrorMsg('')
+                            }}
+                          />
+                          <span>I agree to the terms and returns policy.</span>
+                        </label>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <h2 className="checkout-section-title">
+                        <span className="checkout-section-num">02</span> Payment method
+                      </h2>
 
-                  {/* Terms Checkbox */}
-                  <label className="checkout-terms">
-                    <input
-                      type="checkbox"
-                      checked={agreeTerms}
-                      onChange={(e) => {
-                        setAgreeTerms(e.target.checked)
-                        if (e.target.checked) setErrorMsg('')
-                      }}
-                    />
-                    <span>I agree to the terms &amp; conditions and returns policy.</span>
-                  </label>
+                      <div className="checkout-payment-options" role="radiogroup" aria-label="Choose payment method">
+                        {/* UPI */}
+                        <label
+                          className={`checkout-payment-option ${paymentMethod === 'upi' ? 'is-selected' : ''}`}
+                        >
+                          <input
+                            type="radio"
+                            name="paymentMethod"
+                            value="upi"
+                            checked={paymentMethod === 'upi'}
+                            onChange={() => {
+                              setPaymentMethod('upi')
+                              setShowMethodSelector(true)
+                              setErrorMsg('')
+                            }}
+                          />
+                          <span
+                            className={`checkout-radio-dot ${paymentMethod === 'upi' ? 'is-selected' : ''}`}
+                            aria-hidden="true"
+                          />
+                          <span className="checkout-payment-option__text">
+                            UPI — Pay with any UPI app
+                          </span>
+                        </label>
+
+                        {/* Credit / Debit Card */}
+                        <label
+                          className={`checkout-payment-option ${paymentMethod === 'card' ? 'is-selected' : ''}`}
+                        >
+                          <input
+                            type="radio"
+                            name="paymentMethod"
+                            value="card"
+                            checked={paymentMethod === 'card'}
+                            onChange={() => {
+                              setPaymentMethod('card')
+                              setShowMethodSelector(false)
+                              setErrorMsg('')
+                            }}
+                          />
+                          <span
+                            className={`checkout-radio-dot ${paymentMethod === 'card' ? 'is-selected' : ''}`}
+                            aria-hidden="true"
+                          />
+                          <span className="checkout-payment-option__text">
+                            Credit / debit card
+                          </span>
+                        </label>
+
+                        {/* Cash on Delivery */}
+                        <label
+                          className={`checkout-payment-option ${paymentMethod === 'cod' ? 'is-selected' : ''}`}
+                        >
+                          <input
+                            type="radio"
+                            name="paymentMethod"
+                            value="cod"
+                            checked={paymentMethod === 'cod'}
+                            onChange={() => {
+                              setPaymentMethod('cod')
+                              setShowMethodSelector(true)
+                              setErrorMsg('')
+                            }}
+                          />
+                          <span
+                            className={`checkout-radio-dot ${paymentMethod === 'cod' ? 'is-selected' : ''}`}
+                            aria-hidden="true"
+                          />
+                          <span className="checkout-payment-option__text">
+                            Cash on delivery · ₹49 fee
+                          </span>
+                        </label>
+                      </div>
+
+                      {/* Conditional Payment Input Block */}
+                      {paymentMethod === 'upi' && (
+                        <div className="checkout-payment-details">
+                          <label htmlFor="checkout-upi-id" className="checkout-field-label">
+                            UPI ID
+                          </label>
+                          <input
+                            id="checkout-upi-id"
+                            type="text"
+                            className="checkout-input"
+                            value={upiId}
+                            onChange={(e) => setUpiId(e.target.value)}
+                            placeholder="arjun.mehta@okaxis"
+                            autoComplete="off"
+                          />
+                          <p className="checkout-security-note">
+                            Your payment is encrypted and secure.
+                          </p>
+                        </div>
+                      )}
+
+                      {paymentMethod === 'cod' && (
+                        <div className="checkout-payment-details">
+                          <p className="checkout-cod-note">
+                            Pay in cash or UPI upon delivery. A ₹49 cash handling fee is included in your order total.
+                          </p>
+                          <p className="checkout-security-note">
+                            Your order is protected with collector-first delivery verification.
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Terms Checkbox */}
+                      <label className="checkout-terms">
+                        <input
+                          type="checkbox"
+                          checked={agreeTerms}
+                          onChange={(e) => {
+                            setAgreeTerms(e.target.checked)
+                            if (e.target.checked) setErrorMsg('')
+                          }}
+                        />
+                        <span>I agree to the terms &amp; conditions and returns policy.</span>
+                      </label>
+                    </>
+                  )}
 
                   {errorMsg && (
                     <p className="checkout-error-msg" role="alert">
