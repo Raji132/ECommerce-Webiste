@@ -4,17 +4,22 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import FormError from '../components/common/FormError.jsx'
 import { getAuthFormError, validateEmailPassword } from '../utils/authForm.js'
+import { useAuth } from '../hooks/useAuth.js'
 
 function Login() {
   const navigate = useNavigate()
+  const { login } = useAuth()
   const [error, setError] = useState('')
 
   function handleSubmit(event) {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
+    const email = formData.get('email')
+    const password = formData.get('password')
+
     const validationError = validateEmailPassword({
-      email: formData.get('email'),
-      password: formData.get('password'),
+      email,
+      password,
     })
 
     if (validationError) {
@@ -23,6 +28,7 @@ function Login() {
     }
 
     setError('')
+    login({ email })
     navigate('/home')
   }
 

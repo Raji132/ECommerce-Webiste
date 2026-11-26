@@ -1,17 +1,21 @@
 import { Link } from 'react-router-dom'
+import { useAuth } from '../../hooks/useAuth.js'
 
 const summaryCards = [
-  { value: '12', label: 'Orders placed' },
-  { value: '4', label: 'Wishlist favorites' },
-  { value: '320', label: 'Collector points' },
+  { value: '0', label: 'Orders placed' },
+  { value: '0', label: 'Wishlist favorites' },
+  { value: '0', label: 'Collector points' },
 ]
 
 function AccountDashboard() {
+  const { user } = useAuth()
+  const displayName = user?.name || user?.email?.split('@')[0] || ''
+
   return (
     <>
       <header className="account-heading">
-        <h1>Welcome to your garage, Arjun.</h1>
-        <p>Collector since March 2023 · Member #APX-03234</p>
+        <h1>Welcome to your garage{displayName ? `, ${displayName}` : ''}.</h1>
+        <p>Collector{user?.email ? ` · ${user.email}` : ''}</p>
       </header>
 
       <div className="account-summary" aria-label="Account summary">
@@ -25,10 +29,10 @@ function AccountDashboard() {
 
       <section className="account-panel account-latest-order">
         <div>
-          <h2>Your latest order · #APX-10482</h2>
-          <p>In transit · 2 items · Expected 13–15 Nov</p>
+          <h2>No recent orders</h2>
+          <p>Start collecting diecast models to track your shipments here.</p>
         </div>
-        <Link to="/my-account/orders/track">Track <span aria-hidden="true">›</span></Link>
+        <Link to="/product_listing">Shop now <span aria-hidden="true">›</span></Link>
       </section>
 
       <section className="account-panel account-management">

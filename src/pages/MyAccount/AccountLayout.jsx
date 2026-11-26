@@ -1,4 +1,5 @@
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '../../hooks/useAuth.js'
 import './MyAccount.css'
 
 const menuItems = [
@@ -27,6 +28,7 @@ const pageNames = {
 function AccountLayout() {
   const { pathname } = useLocation()
   const navigate = useNavigate()
+  const { user, logout } = useAuth()
   const isInvoice = pathname.endsWith('/invoice')
   const isOrderDetails = /^\/my-account\/orders\/[^/]+$/.test(pathname)
   const currentPage = isInvoice
@@ -51,7 +53,7 @@ function AccountLayout() {
         <aside className="account-sidebar">
           <div className="account-sidebar__garage">
             <span>Your garage</span>
-            <strong>Arjun Mehta</strong>
+            <strong>{user ? (user.name || user.email) : ''}</strong>
           </div>
           <nav className="account-sidebar__menu" aria-label="My account">
             {menuItems.map((item) => (
@@ -65,7 +67,7 @@ function AccountLayout() {
               </NavLink>
             ))}
           </nav>
-          <button className="account-sidebar__signout" type="button" onClick={() => navigate('/login')}>
+          <button className="account-sidebar__signout" type="button" onClick={() => { logout(); navigate('/login'); }}>
             Sign out <span aria-hidden="true">↗</span>
           </button>
         </aside>
