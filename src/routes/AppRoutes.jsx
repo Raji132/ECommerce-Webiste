@@ -30,6 +30,8 @@ const ProductDetails = lazy(() => import('../pages/ProductDetails/ProductDetails
 const SearchResults = lazy(() => import('../pages/SearchResults/SearchResults.jsx'))
 const Wishlist = lazy(() => import('../pages/Wishlist/Wishlist.jsx'))
 const Cart = lazy(() => import('../pages/Cart/Cart.jsx'))
+const Checkout = lazy(() => import('../pages/Checkout/Checkout.jsx'))
+const OrderConfirmation = lazy(() => import('../pages/OrderConfirmation/OrderConfirmation.jsx'))
 const VerifyCode = lazy(() => import('../pages/VerifyCode.jsx'))
 
 function AppRoutes() {
@@ -60,6 +62,9 @@ function AppRoutes() {
           <Route path="bag" element={<Cart />} />
           <Route path="add_to_cart" element={<Cart />} />
           <Route path="add-to-cart" element={<Cart />} />
+          <Route path="checkout" element={<Checkout />} />
+          <Route path="order-confirmation" element={<OrderConfirmation />} />
+          <Route path="order_confirmation" element={<OrderConfirmation />} />
           <Route path="shop" element={<ProductListing />} />
           <Route path="services" element={<ProductListing />} />
           <Route path="how-it-works" element={<HowItWorks />} />
