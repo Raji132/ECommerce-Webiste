@@ -1147,3 +1147,362 @@
     width: 100%;
   }
 }
+
+.payment-methods {
+  display: grid;
+  gap: 12px;
+}
+
+.payment-method {
+  min-width: 0;
+  min-height: 78px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 20px;
+  background: var(--color-surface);
+  border: 1px solid #f1f2f2;
+  border-radius: var(--radius-medium);
+}
+
+.payment-method__details {
+  min-width: 0;
+}
+
+.payment-method h2 {
+  margin: 0;
+  color: var(--color-ink);
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.payment-method h2 span {
+  font-weight: 600;
+}
+
+.payment-method p {
+  margin: 5px 0 0;
+  color: var(--color-breadcrumb);
+  font-size: 13px;
+}
+
+.payment-method__actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 16px;
+}
+
+.payment-method__actions button {
+  padding: 6px 0;
+  color: var(--color-breadcrumb);
+  background: transparent;
+  border: 0;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.payment-method__actions .payment-method__remove {
+  color: var(--color-error);
+  font-weight: 700;
+}
+
+.payment-methods__empty {
+  margin: 0;
+  padding: 22px;
+  color: var(--color-muted);
+  background: var(--color-surface);
+  border-radius: var(--radius-medium);
+}
+
+.payment-methods__add,
+.payment-form__submit {
+  min-height: 40px;
+  color: var(--color-white);
+  background: var(--color-error);
+  border: 0;
+  border-radius: var(--radius-small);
+  font: inherit;
+  font-size: var(--font-size-small);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.payment-methods__add {
+  min-width: 220px;
+  margin-top: 30px;
+  padding: 0 14px;
+}
+
+.payment-methods__note {
+  margin: 14px 0 0;
+  color: var(--color-breadcrumb);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.payment-method__actions button:focus-visible,
+.payment-methods__add:focus-visible,
+.payment-form__submit:focus-visible,
+.support-contact a:focus-visible,
+.support-faq summary:focus-visible {
+  outline: 2px solid var(--color-error);
+  outline-offset: 3px;
+}
+
+.payment-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.payment-form__field {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--color-ink);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+}
+
+.payment-form__field--full,
+.payment-form__notice {
+  grid-column: 1 / -1;
+}
+
+.payment-form__field input,
+.payment-form__field select {
+  width: 100%;
+  min-width: 0;
+  height: 40px;
+  padding: 0 10px;
+  color: var(--color-text);
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-small);
+  font: inherit;
+  font-size: var(--font-size-small);
+  font-weight: 400;
+}
+
+.payment-form__field input:focus,
+.payment-form__field select:focus,
+.support-search input:focus {
+  border-color: var(--color-brand);
+  outline: 2px solid rgb(40 53 147 / 12%);
+}
+
+.payment-form__notice {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.support-heading {
+  margin-bottom: 24px;
+}
+
+.support-center {
+  width: 100%;
+}
+
+.support-search {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+  color: var(--color-ink);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.support-search input {
+  width: 100%;
+  min-width: 0;
+  height: 42px;
+  padding: 0 12px;
+  color: var(--color-text);
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-small);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.support-faq {
+  display: grid;
+  height: 250px;
+  align-content: start;
+  gap: 10px;
+  padding-right: 8px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+.support-faq__item {
+  min-width: 0;
+  background: var(--color-surface);
+  border: 1px solid #f1f2f2;
+  border-radius: var(--radius-medium);
+}
+
+.support-faq__item summary {
+  min-height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 18px;
+  color: var(--color-ink);
+  list-style: none;
+  cursor: pointer;
+}
+
+.support-faq__item summary::-webkit-details-marker {
+  display: none;
+}
+
+.support-faq__item summary > span:first-child {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.support-faq__item small {
+  display: block;
+  margin-top: 5px;
+  color: var(--color-breadcrumb);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.support-faq__open {
+  flex: 0 0 auto;
+  color: var(--color-error);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.support-faq__item[open] .support-faq__open {
+  font-size: 0;
+}
+
+.support-faq__item[open] .support-faq__open::after {
+  content: 'Close ↑';
+  font-size: 12px;
+}
+
+.support-faq__item > p {
+  margin: 0;
+  padding: 0 18px 18px;
+  color: var(--color-breadcrumb);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.support-faq__empty {
+  margin: 0;
+  padding: 20px;
+  color: var(--color-muted);
+  background: var(--color-surface);
+  border-radius: var(--radius-medium);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.support-contact {
+  margin-top: 10px;
+}
+
+.support-contact > p {
+  margin: 0 0 18px;
+  color: var(--color-ink);
+  font-size: 14px;
+}
+
+.support-contact__actions {
+  display: flex;
+  gap: 14px;
+}
+
+.support-contact a {
+  min-width: 190px;
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  border-radius: var(--radius-small);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.support-contact__conversation {
+  color: var(--color-white);
+  background: var(--color-error);
+}
+
+.support-contact__email {
+  color: var(--color-white);
+  background: var(--color-ink);
+}
+
+@media (max-width: 47.999rem) {
+  .payment-method {
+    align-items: flex-start;
+    padding: 14px;
+  }
+
+  .payment-method__actions {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+  }
+
+  .support-heading {
+    margin-bottom: 20px;
+  }
+
+  .support-faq {
+    height: 230px;
+  }
+
+  .support-faq__item summary {
+    min-height: 70px;
+    padding: 12px 14px;
+  }
+
+  .support-faq__item > p {
+    padding: 0 14px 14px;
+  }
+}
+
+@media (max-width: 36rem) {
+  .payment-methods__add {
+    width: 100%;
+  }
+
+  .payment-form {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .payment-form__field--full,
+  .payment-form__notice {
+    grid-column: auto;
+  }
+
+  .support-contact__actions {
+    flex-direction: column;
+  }
+
+  .support-contact a {
+    width: 100%;
+  }
+}
