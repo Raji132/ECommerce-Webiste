@@ -1506,3 +1506,27 @@
     width: 100%;
   }
 }
+
+.account-wishlist__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.account-wishlist__grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 1080px) {
+  .account-wishlist__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 380px) {
+  .account-wishlist__grid {
+    grid-template-columns: 1fr;
+  }
+}

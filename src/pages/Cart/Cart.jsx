@@ -41,8 +41,8 @@ function Cart() {
     setCheckoutNotice(true)
     setTimeout(() => {
       setCheckoutNotice(false)
-      alert('Checkout process initiated! Redirecting to secure gateway...')
-    }, 1200)
+      navigate('/checkout')
+    }, 300)
   }
 
   return (

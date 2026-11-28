@@ -21,6 +21,7 @@ const MyOrders = lazy(() => import('../pages/MyAccount/MyOrders.jsx'))
 const OrderDetails = lazy(() => import('../pages/MyAccount/OrderDetails.jsx'))
 const OrderInvoice = lazy(() => import('../pages/MyAccount/OrderInvoice.jsx'))
 const OrderTracking = lazy(() => import('../pages/MyAccount/OrderTracking.jsx'))
+const AccountWishlist = lazy(() => import('../pages/MyAccount/AccountWishlist.jsx'))
 const AccountPlaceholder = lazy(() => import('../pages/MyAccount/AccountPlaceholder.jsx'))
 const NotFound = lazy(() => import('../pages/NotFound/NotFound.jsx'))
 const Register = lazy(() => import('../pages/Register.jsx'))
@@ -30,6 +31,8 @@ const ProductDetails = lazy(() => import('../pages/ProductDetails/ProductDetails
 const SearchResults = lazy(() => import('../pages/SearchResults/SearchResults.jsx'))
 const Wishlist = lazy(() => import('../pages/Wishlist/Wishlist.jsx'))
 const Cart = lazy(() => import('../pages/Cart/Cart.jsx'))
+const Checkout = lazy(() => import('../pages/Checkout/Checkout.jsx'))
+const OrderConfirmation = lazy(() => import('../pages/OrderConfirmation/OrderConfirmation.jsx'))
 const VerifyCode = lazy(() => import('../pages/VerifyCode.jsx'))
 
 function AppRoutes() {
@@ -60,6 +63,13 @@ function AppRoutes() {
           <Route path="bag" element={<Cart />} />
           <Route path="add_to_cart" element={<Cart />} />
           <Route path="add-to-cart" element={<Cart />} />
+          <Route path="checkout" element={<Checkout />} />
+          <Route path="checkout/card" element={<Checkout initialMethod="card" />} />
+          <Route path="checkout-card" element={<Checkout initialMethod="card" />} />
+          <Route path="checkout/cod" element={<Checkout initialMethod="cod" />} />
+          <Route path="checkout-cod" element={<Checkout initialMethod="cod" />} />
+          <Route path="order-confirmation" element={<OrderConfirmation />} />
+          <Route path="order_confirmation" element={<OrderConfirmation />} />
           <Route path="shop" element={<ProductListing />} />
           <Route path="services" element={<ProductListing />} />
           <Route path="how-it-works" element={<HowItWorks />} />
@@ -71,7 +81,7 @@ function AppRoutes() {
             <Route path="orders/track" element={<OrderTracking />} />
             <Route path="orders/:orderId" element={<OrderDetails />} />
             <Route path="orders/:orderId/invoice" element={<OrderInvoice />} />
-            <Route path="wishlist" element={<AccountPlaceholder title="Wishlist" />} />
+            <Route path="wishlist" element={<AccountWishlist />} />
             <Route path="addresses" element={<AddressBook />} />
             <Route path="payment-methods" element={<PaymentMethods />} />
             <Route path="notifications" element={<AccountPlaceholder title="Notifications" />} />

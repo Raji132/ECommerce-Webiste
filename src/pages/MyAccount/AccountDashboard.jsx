@@ -1,15 +1,17 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth.js'
-
-const summaryCards = [
-  { value: '0', label: 'Orders placed' },
-  { value: '0', label: 'Wishlist favorites' },
-  { value: '0', label: 'Collector points' },
-]
+import { useWishlist } from '../../context/WishlistContext.jsx'
 
 function AccountDashboard() {
   const { user } = useAuth()
+  const { wishlistCount } = useWishlist()
   const displayName = user?.name || user?.email?.split('@')[0] || ''
+
+  const summaryCards = [
+    { value: '0', label: 'Orders placed' },
+    { value: String(wishlistCount), label: 'Wishlist favorites' },
+    { value: '0', label: 'Collector points' },
+  ]
 
   return (
     <>
